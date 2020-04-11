@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import {from,fromEvent,of,pipe,interval} from "rxjs";
-import {take} from "rxjs/operators";
-// Observables creation operatrs
+import {from,fromEvent,of,pipe,interval,forkJoin} from "rxjs";
+import {take,map} from "rxjs/operators";
+// Observables creation operators - from,of,fromEvent
 @Component({
   selector: 'my-app',
   templateUrl: './app.component.html',
@@ -10,7 +10,8 @@ import {take} from "rxjs/operators";
 export class AppComponent  {
   name = 'Angular';
   constructor(){
-    const a=from([1,2,3]);
+    // const a=from([1,2,3]);
+    const a= from(fetch(`https://jsonplaceholder.typicode.com/posts`)).pipe(map(res=>res.json()))
     a.subscribe(sub=>console.log('from',sub));
     // Emit on every interval
      const b=interval(1000).pipe(take(2));
